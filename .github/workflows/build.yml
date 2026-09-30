@@ -7,7 +7,7 @@ on:
         description: "Optional: space-separated upstream tags to build (for testing)"
         required: false
       retry_failed:
-        description: "Retry tags that failed before"
+        description: "Retry tags that failed or had no patch before"
         type: boolean
         default: false
   schedule:
@@ -37,7 +37,7 @@ jobs:
             tr ' ' '\n' <<< "$ONLY" > sel.txt
           else
             if [ "$RETRY" = true ]; then
-              jq -r 'to_entries[]|select(.value!="failed")|.key' status.json > done.txt
+              jq -r 'to_entries[]|select(.value=="built")|.key' status.json > done.txt
             else
               jq -r 'keys[]' status.json > done.txt
             fi
@@ -89,11 +89,19 @@ jobs:
           if [ -n "$f" ]; then
             sed -i 's/blockIntelWindows = true/blockIntelWindows = false/' $f
             echo "found=true" >> "$GITHUB_OUTPUT"
-          elif [ -f "../self/patches/${{ matrix.tag }}.patch" ]; then
-            git apply "../self/patches/${{ matrix.tag }}.patch"
-            echo "found=true" >> "$GITHUB_OUTPUT"
           else
-            echo "found=false" >> "$GITHUB_OUTPUT"
+            g=$(grep -rlF 'getRenderer().toLowerCase().contains("intel")' --include=*.java . || true)
+            if [ -n "$g" ]; then
+              sed -i '/getRenderer().toLowerCase().contains("intel")/ s/if *(/if (false \&\& /' $g
+            fi
+            if [ -n "$g" ] && grep -rqE 'if \(false && .*getRenderer\(\)' $g; then
+              echo "found=true" >> "$GITHUB_OUTPUT"
+            elif [ -f "../self/patches/${{ matrix.tag }}.patch" ]; then
+              git apply "../self/patches/${{ matrix.tag }}.patch"
+              echo "found=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "found=false" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       - name: Build
@@ -105,12 +113,10 @@ jobs:
           chmod +x gradlew
           ./gradlew build --no-daemon
 
-      - name: Release jars
+      - name: Collect jars
         id: r
         if: steps.p.outputs.found == 'true' && steps.b.outcome == 'success'
         continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p out
           for loader in fabric forge neoforge; do
@@ -120,11 +126,13 @@ jobs:
             fi
           done
           ls out
-          if [ -z "$(ls -A out)" ]; then echo "no jars found"; exit 1; fi
-          gh release delete "intel-${{ matrix.tag }}" -y --cleanup-tag --repo "$GITHUB_REPOSITORY" || true
-          gh release create "intel-${{ matrix.tag }}" out/*.jar --repo "$GITHUB_REPOSITORY" \
-            --title "Vivecraft ${{ matrix.tag }} (Intel patch)" \
-            --notes "Unofficial build of Vivecraft ${{ matrix.tag }} with blockIntelWindows defaulted to false. Download the jar for your mod loader (fabric, forge or neoforge)."
+          [ -n "$(ls -A out)" ]
+
+      - uses: actions/upload-artifact@v4
+        if: steps.r.outcome == 'success'
+        with:
+          name: jars-${{ matrix.tag }}
+          path: out/*.jar
 
       - name: Record result
         if: always()
@@ -140,47 +148,39 @@ jobs:
           name: result-${{ matrix.tag }}
           path: res/*.json
 
-  readme:
+  publish:
     needs: [plan, build]
     if: ${{ !cancelled() && needs.plan.outputs.has == 'true' }}
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
-          pattern: result-*
+          pattern: jars-*
           merge-multiple: true
-          path: res
-      - name: Update status.json and README.md
-        run: |
-          python3 - <<'EOF'
-          import json, glob, os, re
-          st = json.load(open("status.json")) if os.path.exists("status.json") else {}
-          for f in glob.glob("res/*.json"):
-              st.update(json.load(open(f)))
-          json.dump(st, open("status.json", "w"), indent=1, sort_keys=True)
+          path: out
 
-          repo = os.environ["GITHUB_REPOSITORY"]
-          key = lambda t: [int(x) if x.isdigit() else 0 for x in re.split(r"[.\-]", t)]
-          by_mc = {}
-          for tag, s in st.items():
-              by_mc.setdefault(tag.split("-")[0], []).append((tag, s))
-          lines = [
-            "# Vivecraft Intel-patched builds", "",
-            "Unofficial builds of Vivecraft with the Intel GPU block disabled (`blockIntelWindows` defaults to `false`).",
-            "Built automatically from the official source. Not affiliated with or endorsed by Vivecraft.", "",
-            "Each download has one jar per mod loader (fabric, forge, neoforge), named like `vivecraft-1.20.1-1.3.15-fabric.jar`.", "",
-            "Legend: built = download available, no-patch = setting not found in that version, failed = build error.", "",
-            "| Minecraft | Vivecraft version | Status |", "|---|---|---|"]
-          for mc in sorted(by_mc, key=key, reverse=True):
-              for tag, s in sorted(by_mc[mc], key=lambda x: key(x[0]), reverse=True):
-                  cell = f"[download](https://github.com/{repo}/releases/tag/intel-{tag})" if s == "built" else s
-                  lines.append(f"| {mc} | {tag} | {cell} |")
-          open("README.md", "w").write("\n".join(lines) + "\n")
-          EOF
-      - name: Commit
+      - name: Publish into one release per Minecraft family
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@users.noreply.github.com"
-          git add status.json README.md
-          git diff --cached --quiet || git commit -m "Update build status" && git push
+          R="$GITHUB_REPOSITORY"
+          fam() { case "$1" in 26*) echo 26 ;; *) echo "$1" | cut -d. -f1,2 ;; esac; }
+          ensure() {
+            gh release view "intel-$1" --repo "$R" >/dev/null 2>&1 || \
+              gh release create "intel-$1" --repo "$R" \
+                --title "Vivecraft for Minecraft $1.x (Intel patch)" \
+                --notes "All Intel-patched Vivecraft builds for Minecraft $1.x. Files are named vivecraft-<minecraft>-<vivecraft version>-<loader>.jar. See the README for the latest build of each Minecraft version."
+          }
+
+          # one-time migration of old per-tag releases into family releases
+          mkdir -p mig
+          for t in $(gh release list --repo "$R" --limit 1000 --json tagName -q '.[].tagName' | grep -E '^intel-(1|26)\.[0-9]+(\.[0-9]+)?-' || true); do
+            mc=${t#intel-}; mc=${mc%%-*}
+            f=$(fam "$mc")
+            ensure "$f"
+            rm -f mig/*
+            gh release download "$t" --repo "$R" --pattern '*.jar' --dir mig || true
+            if ls mig/*.jar >/dev/null 2>&1; then
+              if gh release upload "intel-$f" mig/*.jar --repo "$R" --clobber; then
+                gh release delete "$t" --repo
