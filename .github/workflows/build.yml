@@ -101,9 +101,7 @@ jobs:
           else
             g=$(grep -rlF 'getRenderer().toLowerCase().contains("intel")' --include=*.java . || true)
             if [ -n "$g" ]; then
-              sed -i '/getRenderer().toLowerCase().contains("intel")/ s/if *(/if (false \&\& /' $g
-            fi
-            if [ -n "$g" ] && grep -rqE 'if \(false && .*getRenderer\(\)' $g; then
+              sed -i 's/getRenderer().toLowerCase().contains("intel")/getRenderer().toLowerCase().contains("intel-check-disabled")/' $g
               echo "found=true" >> "$GITHUB_OUTPUT"
             elif [ -f "../self/patches/${{ matrix.tag }}.patch" ]; then
               git apply "../self/patches/${{ matrix.tag }}.patch"
@@ -112,6 +110,8 @@ jobs:
               echo "found=false" >> "$GITHUB_OUTPUT"
             fi
           fi
+          echo "patched files: ${g:-$f}"
+          git diff --stat || true
 
       - name: Build
         id: b
@@ -128,6 +128,7 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p out
+          ls -la src/*/build/libs/ || true
           for loader in fabric forge neoforge; do
             jar=$(ls -S src/$loader/build/libs/*.jar 2>/dev/null | grep -v -E '(-sources|-javadoc|-dev|transformProduction)' | head -n 1 || true)
             if [ -n "$jar" ]; then
@@ -255,7 +256,12 @@ jobs:
               st.update(json.load(open(f)))
           json.dump(st, open("status.json", "w"), indent=1, sort_keys=True)
 
-          key = lambda t: [int(x) if x.isdigit() else 0 for x in re.split(r"[.\-]", t)]
+          def key(t):
+              m = re.search(r"-[a-z](\d+)$", t)
+              core = t[:m.start()] if m else t
+              tail = [-1, int(m.group(1))] if m else [0, 0]
+              return [int(x) for x in re.findall(r"\d+", core)] + tail
+
           fam = lambda mc: "26" if mc.startswith("26") else ".".join(mc.split(".")[:2])
 
           builds = {}
