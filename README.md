@@ -8,7 +8,8 @@ Download the jar for your mod loader (Fabric, Forge or NeoForge) and use only on
 
 | Minecraft | Vivecraft | Download |
 |---|---|---|
-| 26.2 | 1.3.12 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.12-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.12-neoforge.jar) |
+| 26.3 | 1.3.16 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.3-1.3.16-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.3-1.3.16-neoforge.jar) |
+| 26.2 | 1.3.15 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.15-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.15-neoforge.jar) |
 | 26.1.2 | 1.3.15 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.1.2-1.3.15-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.1.2-1.3.15-neoforge.jar) |
 | 26.1.1 | 1.3.7-b2 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.1.1-1.3.7-b2-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.1.1-1.3.7-b2-neoforge.jar) |
 | 1.21.11 | 1.3.15 | [fabric](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-1.21/vivecraft-1.21.11-1.3.15-fabric.jar) · [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-1.21/vivecraft-1.21.11-1.3.15-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-1.21/vivecraft-1.21.11-1.3.15-neoforge.jar) |
@@ -33,12 +34,15 @@ Download the jar for your mod loader (Fabric, Forge or NeoForge) and use only on
 
 ## All builds
 
-<details><summary>Minecraft 26.x (12 builds)</summary>
+<details><summary>Minecraft 26.x (15 builds)</summary>
 
 [Release page](https://github.com/BrandMan27/vivecraft-intel-builds/releases/tag/intel-26)
 
 | Minecraft | Vivecraft | Download |
 |---|---|---|
+| 26.3 | 1.3.16 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.3-1.3.16-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.3-1.3.16-neoforge.jar) |
+| 26.2 | 1.3.15 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.15-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.15-neoforge.jar) |
+| 26.2 | 1.3.13 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.13-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.13-neoforge.jar) |
 | 26.2 | 1.3.12 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.12-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.12-neoforge.jar) |
 | 26.2 | 1.3.11 | [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.11-neoforge.jar) |
 | 26.1.2 | 1.3.15 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.1.2-1.3.15-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.1.2-1.3.15-neoforge.jar) |
@@ -345,7 +349,7 @@ Download the jar for your mod loader (Fabric, Forge or NeoForge) and use only on
 
 </details>
 
-<details><summary>Not patched (71 versions)</summary>
+<details><summary>Not patched (73 versions)</summary>
 
 These have no jar: either the Intel check wasn't found or the build failed.
 
@@ -358,6 +362,8 @@ These have no jar: either the Intel check wasn't found or the build failed.
 - 1.21.5-1.2.5-b3 (no-patch)
 - 1.21.5-1.2.5-b2 (no-patch)
 - 1.21.5-1.2.5-b1 (no-patch)
+- 1.21.4-1.3.4 (failed)
+- 1.21.4-1.2.1 (failed)
 - 1.20.6-1.1.12-b5 (no-patch)
 - 1.20.6-1.1.11-b3 (no-patch)
 - 1.20.6-1.1.11-b1 (no-patch)
