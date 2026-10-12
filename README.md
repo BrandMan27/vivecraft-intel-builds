@@ -8,7 +8,7 @@ Download the jar for your mod loader (Fabric, Forge or NeoForge) and use only on
 
 | Minecraft | Vivecraft | Download |
 |---|---|---|
-| 26.3 | 1.3.16 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.3-1.3.16-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.3-1.3.16-neoforge.jar) |
+| 26.3 | 1.3.17 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.3-1.3.17-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.3-1.3.17-neoforge.jar) |
 | 26.2 | 1.3.15 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.15-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.15-neoforge.jar) |
 | 26.1.2 | 1.3.15 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.1.2-1.3.15-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.1.2-1.3.15-neoforge.jar) |
 | 26.1.1 | 1.3.7-b2 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.1.1-1.3.7-b2-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.1.1-1.3.7-b2-neoforge.jar) |
@@ -34,12 +34,13 @@ Download the jar for your mod loader (Fabric, Forge or NeoForge) and use only on
 
 ## All builds
 
-<details><summary>Minecraft 26.x (15 builds)</summary>
+<details><summary>Minecraft 26.x (16 builds)</summary>
 
 [Release page](https://github.com/BrandMan27/vivecraft-intel-builds/releases/tag/intel-26)
 
 | Minecraft | Vivecraft | Download |
 |---|---|---|
+| 26.3 | 1.3.17 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.3-1.3.17-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.3-1.3.17-neoforge.jar) |
 | 26.3 | 1.3.16 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.3-1.3.16-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.3-1.3.16-neoforge.jar) |
 | 26.2 | 1.3.15 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.15-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.15-neoforge.jar) |
 | 26.2 | 1.3.13 | [forge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.13-forge.jar) · [neoforge](https://github.com/BrandMan27/vivecraft-intel-builds/releases/download/intel-26/vivecraft-26.2-1.3.13-neoforge.jar) |
